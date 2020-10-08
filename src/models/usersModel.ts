@@ -1,31 +1,35 @@
-// TODO transformer en Typescript
 class User {
-  static last_id = 0;
 
-  constructor(firstname, lastname, email){
-    User.last_id += 1;
-    this.id = User.last_id;
-    this.firstname = firstname;
-    this.lastname = lastname;
-    this.email = email;
-  }
+    id : number;
+    firstname : string;
+    lastname : string;
+    email : string;
+    static last_id = 0;
 
-  status(){
-    return `Je m'appelle ${this.firstname} ${this.lastname} et suis joignable sur ${this.email}`;
-  }
+    constructor(firstname: string, lastname: string, email: string) {
+        User.last_id += 1;
+        this.id = User.last_id;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+    }
 
-  changeLastname(newName){
-    this.lastname = newName
-  }
+    status() {
+        return `Je m'appelle ${this.firstname} ${this.lastname} et suis joignable sur ${this.email}`;
+    }
 
-  changeFirstname(newFirstname){
-    this.firstname = newFirstname;
-  }
+    changeLastname(newlastname : string) {
+        this.lastname = newlastname ;
+    }
+
+    changeFirstname(newFirstname : string) {
+        this.firstname = newFirstname;
+    }
 }
 
 const existingUsers = [
-  new User('Thomas', 'Falcone', 'thomas.falcone@mail.com'),
-  new User('Philippa', 'Dupont', 'mail@mail.mail')
+    new User('Thomas', 'Falcone', 'thomas.falcone@mail.com'),
+    new User('Philippa', 'Dupont', 'mail@mail.mail')
 ]
 
 export { User, existingUsers }
