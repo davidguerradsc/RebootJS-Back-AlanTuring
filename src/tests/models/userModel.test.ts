@@ -1,5 +1,4 @@
-// TODO transformer en TS
-import User from '../../models/usersModel';
+import { User } from '../../models/usersModel';
 
 describe('User functions', () => {
   test('User#changeFirstname', () => {

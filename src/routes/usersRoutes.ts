@@ -1,22 +1,28 @@
 import { Request, Response, Router } from 'express';
-import { createUser } from '../controllers/usersController';
+import { createUser, getUser } from '../controllers/usersController';
 
 const router = Router();
 
 // uri finale = /api/users/:userId, cf ligne "app.use('/users', usersRoutes);"
 router.get('/:userId', (req : Request, res : Response) => {
-  //TODO;
+  const id = parseInt(req.params["userId"]);
+
+  const user = getUser(id);
+
+  res.send(user);
 })
 
 router.post('/', (req : Request, res : Response) => {
-  // TODO Verification sur le body
+  const { firstname, lastname, email } = req.body;
 
+  if(!firstname || !lastname || !email){
+    return res.status(400).send("Please provide a firstname, lastname and email");
+  }
 
-  // Appel le controller
-  createUser(firstname, lastname, email);
+  // Appelle le controller
+  const newUser = createUser(firstname, lastname, email);
 
-
-  // J'envoie la reponse
-  res.send('Blabla');
+  res.send(newUser);
 })
+
 export default router;

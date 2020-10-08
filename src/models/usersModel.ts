@@ -1,8 +1,11 @@
-// TODO transformer en Typescript
 class User {
+  id: number;
+  firstname: string;
+  lastname: string;
+  email: string;
   static last_id = 0;
 
-  constructor(firstname, lastname, email){
+  constructor(firstname: string, lastname: string, email: string){
     User.last_id += 1;
     this.id = User.last_id;
     this.firstname = firstname;
@@ -14,11 +17,11 @@ class User {
     return `Je m'appelle ${this.firstname} ${this.lastname} et suis joignable sur ${this.email}`;
   }
 
-  changeLastname(newName){
+  changeLastname(newName: string){
     this.lastname = newName
   }
 
-  changeFirstname(newFirstname){
+  changeFirstname(newFirstname: string){
     this.firstname = newFirstname;
   }
 }
