@@ -13,14 +13,6 @@ class User {
     this.email = email;
   }
 
-    constructor(firstname: string, lastname: string, email: string) {
-        User.last_id += 1;
-        this.id = User.last_id;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.email = email;
-    }
-
   changeLastname(newName: string){
     this.lastname = newName
   }

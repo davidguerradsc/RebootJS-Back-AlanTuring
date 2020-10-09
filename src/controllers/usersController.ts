@@ -29,8 +29,6 @@ function updateUser(id: number, firstname?: string, lastname?: string, email?: s
 }
 
 function deleteUser(){}
-
-function updateUser(){}
     
 
 export {
