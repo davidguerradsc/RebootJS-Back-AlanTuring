@@ -45,5 +45,5 @@ function deleteUser() { }
 export {
     createUser,
     getUser,
-    //updateUser
+    updateUser
 }

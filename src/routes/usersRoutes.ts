@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express';
 import { updateLanguageServiceSourceFile } from 'typescript';
 import { UserNotFoundError } from '../controllers/errors/userNotFound';
-import { createUser, getUser, /* updateUser */ } from '../controllers/usersController';
+import { createUser, getUser, updateUser } from '../controllers/usersController';
 
 const router = Router();
 
