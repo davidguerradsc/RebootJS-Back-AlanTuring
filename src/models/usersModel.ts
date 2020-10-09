@@ -1,4 +1,4 @@
-class User {
+/* class User {
   id: number;
   firstname: string;
   lastname: string;
@@ -23,8 +23,30 @@ class User {
 }
 
 const existingUsers = [
-    new User('Thomas', 'Falcone', 'thomas.falcone@mail.com'),
-    new User('Philippa', 'Dupont', 'mail@mail.mail')
+    new User('David', 'Guerra', 'david.guerra@mail.com'),
+    new User('Sandrine', 'Guerra', 'sandrine@mail.mail')
 ]
 
-export { User, existingUsers }
+export { User, existingUsers } */
+
+import { Document, Schema, model, Model } from "mongoose";
+
+export interface IUser extends Document {
+    firstname: string;
+    lastname: string;
+    email: string;
+    status(): () => string;
+}
+
+
+const userSchema = new Schema ({
+    firstname: { type: String, required:true},
+    lastname: { type: String, required:true},
+    email: { type: String, required:true, unique: true}
+})
+
+userSchema.methods.status = function(){
+    return `User : ${this.firstname} ${this.lastname}`;
+}
+
+export const User = model<IUser, Model<IUser>>("User", userSchema);

@@ -1,4 +1,9 @@
 {
   "PORT": 3000,
-  "express_debug": true
+  "express_debug": true,
+  "mongo_host": "clusterdavidguerradsc.v3jiv.mongodb.net",
+  "mongo_user": "daveguerra",
+  "mongo_pass": "password",
+  "mongo_database": "flint_mesenger",
+  "mongo_debug": true
 }

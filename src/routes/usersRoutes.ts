@@ -1,46 +1,52 @@
 import { Request, Response, Router } from 'express';
 import { updateLanguageServiceSourceFile } from 'typescript';
 import { UserNotFoundError } from '../controllers/errors/userNotFound';
-import { createUser, getUser, updateUser } from '../controllers/usersController';
+import { createUser, getUser, /* updateUser */ } from '../controllers/usersController';
 
 const router = Router();
 
 // uri finale = /api/users/:userId, cf ligne "app.use('/users', usersRoutes);"
-router.get('/:userId', (req : Request, res : Response) => {
-  const id = parseInt(req.params["userId"]);
+router.get('/:userId', (req: Request, res: Response) => {
+    const id = parseInt(req.params["userId"]);
 
-  const user = getUser(id);
+    getUser(
+        id,
+        (user) => {
+            if (!user) { return res.status(404).send('Usr not Found') }
+            res.send(user);
+        }
+    );
 
-  res.send(user);
+
 })
 
-router.post('/', (req : Request, res : Response) => {
-  const { firstname, lastname, email } = req.body;
+router.post('/', (req: Request, res: Response) => {
+    const { firstname, lastname, email } = req.body;
 
-  if(!firstname || !lastname || !email){
-    return res.status(400).send("Please provide a firstname, lastname and email");
-  }
+    if (!firstname || !lastname || !email) {
+        return res.status(400).send("Please provide a firstname, lastname and email");
+    }
 
-  // Appelle le controller
-  const newUser = createUser(firstname, lastname, email);
+    // Appelle le controller
+    const newUser = createUser(firstname, lastname, email);
 
-  res.send(newUser);
+    res.send(newUser);
 })
 
 router.patch('/:userId', (req: Request, res: Response) => {
-  const id = parseInt(req.params["userId"]);
-  const { firstname, lastname, email } = req.body;
-
-  try {
-    updateUser(id, firstname, lastname, email);
-  } catch(err) {
-    if(err instanceof UserNotFoundError){
-      res.status(404).send("User not found");
-    } else {
-      throw err;
+    const id = req.params["userId"];
+    const { firstname, lastname, email } = req.body;
+  
+    try {
+      updateUser(id, firstname, lastname, email);
+    } catch(err) {
+      if(err instanceof UserNotFoundError){
+        res.status(404).send("User not found");
+      } else {
+        throw err;
+      }
     }
-  }
-})
+  })
 
 
 
