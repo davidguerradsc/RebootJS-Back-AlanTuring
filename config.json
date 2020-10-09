@@ -1,4 +1,9 @@
 {
   "PORT": 3000,
-  "express_debug": true
+  "express_debug": true,
+  "mongo_host": "cluster0.xwhrm.mongodb.net",
+  "mongo_user": "thomas",
+  "mongo_pass": "password",
+  "mongo_database": "flint_messenger",
+  "mongo_debug": true
 }
