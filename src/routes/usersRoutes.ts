@@ -1,5 +1,7 @@
 import { Request, Response, Router } from 'express';
-import { createUser, getUser } from '../controllers/usersController';
+import { updateLanguageServiceSourceFile } from 'typescript';
+import { UserNotFoundError } from '../controllers/errors/userNotFound';
+import { createUser, getUser, updateUser } from '../controllers/usersController';
 
 const router = Router();
 
@@ -25,4 +27,18 @@ router.post('/', (req : Request, res : Response) => {
   res.send(newUser);
 })
 
+router.patch('/:userId', (req: Request, res: Response) => {
+  const id = parseInt(req.params["userId"]);
+  const { firstname, lastname, email } = req.body;
+
+  try {
+    updateUser(id, firstname, lastname, email);
+  } catch(err) {
+    if(err instanceof UserNotFoundError){
+      res.status(404).send("User not found");
+    } else {
+      throw err;
+    }
+  }
+})
 export default router;
