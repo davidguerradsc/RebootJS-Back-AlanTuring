@@ -6,18 +6,17 @@ import { createUser, getUser, /* updateUser */ } from '../controllers/usersContr
 const router = Router();
 
 // uri finale = /api/users/:userId, cf ligne "app.use('/users', usersRoutes);"
-router.get('/:userId', (req: Request, res: Response) => {
-    const id = parseInt(req.params["userId"]);
+router.get('/:userId', (req : Request, res : Response) => {
+  const id = req.params["userId"];
 
-    getUser(
-        id,
-        (user) => {
-            if (!user) { return res.status(404).send('Usr not Found') }
-            res.send(user);
-        }
-    );
+  getUser(
+    id,
+    (user) => {
+      if(!user) { return res.status(404).send('User Not Found') }
 
-
+      return res.send(user);
+    }
+  );
 })
 
 router.post('/', (req: Request, res: Response) => {
@@ -34,20 +33,18 @@ router.post('/', (req: Request, res: Response) => {
 })
 
 router.patch('/:userId', (req: Request, res: Response) => {
-    const id = req.params["userId"];
-    const { firstname, lastname, email } = req.body;
-  
-    try {
-      updateUser(id, firstname, lastname, email);
-    } catch(err) {
-      if(err instanceof UserNotFoundError){
-        res.status(404).send("User not found");
-      } else {
-        throw err;
-      }
+  const id = req.params["userId"];
+  const { firstname, lastname, email } = req.body;
+
+  try {
+    updateUser(id, firstname, lastname, email);
+  } catch(err) {
+    if(err instanceof UserNotFoundError){
+      res.status(404).send("User not found");
+    } else {
+      throw err;
     }
-  })
-
-
+  }
+})
 
 export default router;
