@@ -43,19 +43,25 @@ router.delete('/:userId/delete', (req: Request, res: Response) => {
     res.send(user);
 })
 
-router.patch('/:userId/patch', (req: Request, res: Response) => {
+router.patch('/:userId', (req: Request, res: Response) => {
     // Je récupere l'ID de l'utilisateur
     const id = parseInt(req.params["userId"]);
+   
     // J'utilise la methode "getUser (cf : usersController)" avec l'id récuperer au dessus afin de réupérer l'utilisateur correspondant
     const user = getUser(id);
+    //const user = existingUsers;
+    if (!user){
+        return res.status(404).send('error')
+    }
     // Je récupere les variables qui se trouve dans le req.body
     const { firstname, lastname, email } = req.body;
-    const updatedUser = {...user, 
+    const updatedUser = {...user,
         firstname: firstname || user.firstname,
-        lastname: lastname || user.lastname, 
+        lastname: lastname || user.lastname,
         email: email || user.email}
     res.send(updatedUser);
 })
+
 
 
 export default router;

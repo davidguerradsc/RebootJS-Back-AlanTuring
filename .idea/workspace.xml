@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f715a34a-fba3-4702-b53a-26ab03284d06" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/controllers/usersController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/usersController.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/usersModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/usersModel.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/usersRoutes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/usersRoutes.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -34,6 +32,7 @@
       <option name="presentableId" value="Default" />
       <updated>1602165001180</updated>
       <workItem from="1602165002916" duration="91000" />
+      <workItem from="1602183908459" duration="960000" />
     </task>
     <servers />
   </component>
