@@ -2,10 +2,10 @@ import { IUser, User } from "../models/usersModel";
 import { DatabaseError } from "./errors/databaseError";
 import { UserNotFoundError } from "./errors/userNotFound";
 
-function createUser(firstname: string, lastname: string, email: string) : IUser{
-  const user = new User({firstname, lastname, email});
-  user.save();
-  return user;
+function createUser(firstname: string, lastname: string, email: string): IUser {
+    const user = new User({ firstname, lastname, email });
+    user.save();
+    return user;
 }
 
 function getUser(id: string, callback: (user: IUser | null) => void): void {
@@ -20,19 +20,21 @@ function getUser(id: string, callback: (user: IUser | null) => void): void {
     );
 }
 
-function updateUser(id: string, firstname?: string, lastname?: string, email?: string, callback?: (user: IUser) => void){
-  User.findById(id, (err, user) => {
-    if(err) { throw new DatabaseError(err) }
-    if(!user) { throw new UserNotFoundError(id, 'User Not Found')}
+function updateUser(id: string, firstname?: string, lastname?: string, email?: string, callback?: (user: IUser) => void) {
+    User.findById(
+        id,
+        (err, user) => {
+            if (err) { throw new DatabaseError(err) }
+            if (!user) { throw new UserNotFoundError(id, 'User Not Found') }
 
-    user.firstname = firstname || user.firstname;
-    user.lastname = lastname || user.lastname;
-    user.email = email || user.email;
+            user.firstname = firstname || user.firstname;
+            user.lastname = lastname || user.lastname;
+            user.email = email || user.email;
 
-    user.save();
+            user.save();
 
-    if(callback) callback(user);
-  });
+            if (callback) callback(user);
+        });
 }
 
 function deleteUser() { }
