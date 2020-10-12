@@ -9,7 +9,7 @@ function createUser(firstname: string, lastname: string, email: string, password
   return user;
 }
 
-function getUser (id: string, callback: (user: IUser | null) => void): void {
+function getUser(id: string, callback: (user: IUser | null) => void) : void{
   // return existingUsers.find(user => user.id === id);
   User.findById(
     id,
@@ -26,11 +26,11 @@ function updateUser(id: string, firstname?: string, lastname?: string, email?: s
     if (err) { throw new DatabaseError(err); }
     if (!user) { throw new UserNotFoundError(id, 'User Not Found'); }
 
-      user.firstname = firstname || user.firstname
-      user.lastname = lastname || user.lastname
-      user.email = email || user.email
+    user.firstname = firstname || user.firstname;
+    user.lastname = lastname || user.lastname;
+    user.email = email || user.email;
 
-      user.save()
+    user.save();
 
     if (callback) callback(user);
   });
