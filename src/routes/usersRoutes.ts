@@ -1,7 +1,7 @@
 import { request, Request, Response, Router } from 'express';
 import { resolveTypeReferenceDirective } from 'typescript';
 import { UserNotFoundError } from '../controllers/errors/userNotFound';
-import { createUser, getUser, updateUser } from '../controllers/usersController';
+import { createUser, getUser, updateUser, getUsers } from '../controllers/usersController';
 import { authenticationRequired } from '../middlewares/authenticationRequired';
 
 const router = Router()
@@ -34,7 +34,7 @@ router.post('/', (req : Request, res : Response) => {
 });
 
 
-router.get('/', (req: request, res: Response) => {
+router.get('/', (req: Request, res: Response) => {
     getUsers((users) => {
         if(!users) { return res.status(404).send('Users not found')}
         return res.send(users);

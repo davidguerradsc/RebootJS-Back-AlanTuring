@@ -21,7 +21,7 @@ function getUser(id: string, callback: (user: IUser | null) => void) : void{
   );
 }
 
-function getUsers(callback: (users: Iuser[]) => void): void {
+function getUsers(callback: (users: IUser[]) => void): void {
     User.find({}, function (err, users) {
         if (err) { throw err; }
 
