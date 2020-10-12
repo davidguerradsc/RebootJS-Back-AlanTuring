@@ -1,4 +1,5 @@
-import { Request, Response, Router } from 'express';
+import { request, Request, Response, Router } from 'express';
+import { resolveTypeReferenceDirective } from 'typescript';
 import { UserNotFoundError } from '../controllers/errors/userNotFound';
 import { createUser, getUser, updateUser } from '../controllers/usersController';
 import { authenticationRequired } from '../middlewares/authenticationRequired';
@@ -31,6 +32,15 @@ router.post('/', (req : Request, res : Response) => {
 
   res.send(newUser);
 });
+
+
+router.get('/', (req: request, res: Response) => {
+    getUsers((users) => {
+        if(!users) { return res.status(404).send('Users not found')}
+        return res.send(users);
+    });
+});
+
 
 router.patch('/:userId', authenticationRequired, (req: Request, res: Response) => {
   const id = req.params.userId;
