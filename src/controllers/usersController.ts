@@ -4,7 +4,6 @@ import { UserNotFoundError } from "./errors/userNotFound";
 
 function createUser(firstname: string, lastname: string, email: string) : IUser{
   const user = new User({firstname, lastname, email});
-  // existingUsers.push(user);
   user.save();
   return user;
 }
@@ -21,21 +20,19 @@ function getUser(id: string, callback: (user: IUser | null) => void) : void{
   );
 }
 
-function updateUser(id: string, firstname?: string, lastname?: string, email?: string){
-  // const filteredUser = getUser(id);
-  // if(!filteredUser){
-  //   throw new UserNotFoundError(id, "The user has not been found");
-  // }
+function updateUser(id: string, firstname?: string, lastname?: string, email?: string, callback?: (user: IUser) => void){
+  User.findById(id, (err, user) => {
+    if(err) { throw new DatabaseError(err) }
+    if(!user) { throw new UserNotFoundError(id, 'User Not Found')}
 
-  // const updatedUser = {
-  //   ...filteredUser,
-  //   firstname: firstname || filteredUser.firstname,
-  //   lastname: lastname || filteredUser.lastname,
-  //   email: email || filteredUser.email
-  // }
+    user.firstname = firstname || user.firstname;
+    user.lastname = lastname || user.lastname;
+    user.email = email || user.email;
 
-  // TODO
-  // ...
+    user.save();
+
+    if(callback) callback(user);
+  });
 }
 
 export {
