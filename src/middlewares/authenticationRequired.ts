@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 
-export function authenticationRequired(req: Request, res: Response, next: NextFunction) {
-  if(req.isAuthenticated()) return next();
-  res.status(401).send();
-}
+export function authenticationRequired (req: Request, res: Response, next: NextFunction) {
+    if (req.isAthenticated()) return true;
+    res.status(401).send();
+} 
