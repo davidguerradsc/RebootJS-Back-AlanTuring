@@ -1,3 +1,4 @@
+import { SHA256 } from 'crypto-js';
 // class User {
 //   id: number;
 //   firstname: string;
@@ -33,23 +34,36 @@
 
 // export { User, existingUsers }
 
-import { Document, Schema, model, Model } from 'mongoose'
+import {
+  Document, Schema, model, Model,
+} from 'mongoose';
 
 export interface IUser extends Document {
   firstname: string;
   lastname: string;
   email: string;
-  status(): () => string;
+  status: () => string;
+  verifyPassword: (password: string) => boolean;
+  setPassword: (password: string) => void;
 }
 
 const userSchema = new Schema({
   firstname: { type: String, required: true },
   lastname: { type: String, required: true },
-  email: { type: String, required: true, unique: true }
-})
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true }
+});
 
 userSchema.methods.status = function () {
-  return `User : ${this.firstname} ${this.lastname}`
+  return `User : ${this.firstname} ${this.lastname}`;
+};
+
+userSchema.methods.setPassword = function (password: string) {
+  this.password = SHA256(password).toString();
 }
 
-export const User = model<IUser, Model<IUser>>('User', userSchema)
+userSchema.methods.verifyPassword = function (password: string) {
+  return this.password === SHA256(password).toString();
+}
+
+export const User = model<IUser, Model<IUser>>('User', userSchema);
