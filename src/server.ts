@@ -1,27 +1,19 @@
 import express, { Request, Response, ErrorRequestHandler } from 'express'
 import morgan from 'morgan'
 import helmet from 'helmet'
-import session from 'express-session';
 import { configuration, IConfig } from './config'
 
 import generalRouter from './routes/router'
 import { connect } from './database'
-import { Mongoose } from 'mongoose'
 
 export function createExpressApp (config: IConfig): express.Express {
-    const { express_debug, session_cookie_name, session_secret } = config;
+  const { express_debug } = config
 
   const app = express()
 
   app.use(morgan('combined'))
   app.use(helmet())
   app.use(express.json())
-  app.use(session({
-      name: session_cookie_name,
-      secret: session_secret,
-      store: new MongoStore({mongooseConnection: Mongoose.connection}),
-      saveUninitialized: false,//
-  }))
 
   app.use(((err, _req, res, _next) => {
     console.error(err.stack)
