@@ -2,8 +2,9 @@ import { IUser, User } from '../models/usersModel';
 import { DatabaseError } from './errors/databaseError';
 import { UserNotFoundError } from './errors/userNotFound';
 
-function createUser(firstname: string, lastname: string, email: string) : IUser {
+function createUser(firstname: string, lastname: string, email: string, password: string) : IUser {
   const user = new User({ firstname, lastname, email });
+  user.setPassword(password);
   user.save();
   return user;
 }
