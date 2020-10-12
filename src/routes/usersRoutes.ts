@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express'
 import { updateLanguageServiceSourceFile } from 'typescript'
 import { UserNotFoundError } from '../controllers/errors/userNotFound'
-import { createUser, getUser, updateUser } from '../controllers/usersController'
+import { createUser, getUser, updateUser, deleteUser } from '../controllers/usersController'
 
 const router = Router()
 
@@ -46,5 +46,18 @@ router.patch('/:userId', (req: Request, res: Response) => {
     }
   }
 })
+
+router.delete('/:userId', (req : Request, res : Response) => {
+    const id = req.params.userId
+  
+    deleteUser(
+      id,
+      (user) => {
+        if (!user) { return res.status(404).send('User Not Found') }
+  
+        //return res.send(user)
+      }
+    )
+  })
 
 export default router

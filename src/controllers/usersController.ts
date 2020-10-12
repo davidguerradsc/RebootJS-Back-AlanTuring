@@ -1,3 +1,4 @@
+import { resolveTypeReferenceDirective } from 'typescript'
 import { IUser, User } from '../models/usersModel'
 import { DatabaseError } from './errors/databaseError'
 import { UserNotFoundError } from './errors/userNotFound'
@@ -37,10 +38,13 @@ function updateUser (id: string, firstname?: string, lastname?: string, email?: 
     })
 }
 
-function deleteUser () { }
+function deleteUser (id: string, callback: (user: IUser | null) => void): void {
+    User.deleteOne({id: id});
+ }
 
 export {
   createUser,
   getUser,
-  updateUser
+  updateUser,
+  deleteUser
 }
