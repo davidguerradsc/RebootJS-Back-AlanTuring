@@ -2,11 +2,12 @@ import { Request, Response, Router } from 'express'
 import { updateLanguageServiceSourceFile } from 'typescript'
 import { UserNotFoundError } from '../controllers/errors/userNotFound'
 import { createUser, getUser, updateUser, deleteUser } from '../controllers/usersController'
+import { authenticationRequired } from '../middlewares/authenticationRequired'
 
 const router = Router()
 
 // uri finale = /api/users/:userId, cf ligne "app.use('/users', usersRoutes);"
-router.get('/:userId', (req : Request, res : Response) => {
+router.get('/:userId', authenticationRequired, (req : Request, res : Response) => {
   const id = req.params.userId
 
   getUser(
@@ -32,7 +33,7 @@ router.post('/', (req: Request, res: Response) => {
   res.send(newUser)
 })
 
-router.patch('/:userId', (req: Request, res: Response) => {
+router.patch('/:userId', authenticationRequired, (req: Request, res: Response) => {
   const id = req.params.userId
   const { firstname, lastname, email } = req.body
 
@@ -47,7 +48,7 @@ router.patch('/:userId', (req: Request, res: Response) => {
   }
 })
 
-router.delete('/:userId', (req : Request, res : Response) => {
+router.delete('/:userId', authenticationRequired, (req : Request, res : Response) => {
     const id = req.params.userId
   
     deleteUser(
