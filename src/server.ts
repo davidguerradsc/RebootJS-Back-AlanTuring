@@ -7,8 +7,10 @@ import { configuration, IConfig } from './config';
 import generalRouter from './routes/router';
 import { connect } from './database';
 import mongoose from 'mongoose';
-import { MongoStore } from 'connect-mongo';
+import connect_mongo from 'connect-mongo';
 import { authenticationInitialize, authenticationSession } from './controllers/authenticationController';
+
+const MongoStore = connect_mongo(session);
 
 export function createExpressApp(config: IConfig): express.Express {
   const { express_debug, session_cookie_name, session_secret } = config;
@@ -23,6 +25,7 @@ export function createExpressApp(config: IConfig): express.Express {
     secret: session_secret,
     store: new MongoStore({mongooseConnection: mongoose.connection}), // Recup connexion from mongoose
     saveUninitialized: false,
+    resave: false,
   }));
   app.use(authenticationInitialize());
   app.use(authenticationSession());

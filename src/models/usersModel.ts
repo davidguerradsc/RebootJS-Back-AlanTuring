@@ -45,7 +45,10 @@ export interface IUser extends Document {
   status: () => string;
   verifyPassword: (password: string) => boolean;
   setPassword: (password: string) => void;
+  getSafeUser: () => ISafeUser;
 }
+
+type ISafeUser = Pick<IUser, "firstname" | "lastname" | "email" | "_id">
 
 const userSchema = new Schema({
   firstname: { type: String, required: true },
@@ -53,6 +56,11 @@ const userSchema = new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true }
 });
+
+userSchema.methods.getSafeUser = function() {
+    const { _id, firstname, lastname, email } = this;
+    return { _id, firstname, lastname, email };
+}
 
 userSchema.methods.status = function () {
   return `User : ${this.firstname} ${this.lastname}`;
