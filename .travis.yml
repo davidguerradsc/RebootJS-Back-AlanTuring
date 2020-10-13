@@ -11,7 +11,6 @@ jobs:
     name: compile
     install: npm install
     script: npm run build
-    
   - stage: testing
     name: linter
     install: npm install
