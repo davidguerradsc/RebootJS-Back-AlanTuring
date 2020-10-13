@@ -2,8 +2,13 @@ import { Request, Response, Router } from 'express';
 import { UserNotFoundError } from '../controllers/errors/userNotFound';
 import { createUser, getUser, updateUser } from '../controllers/usersController';
 import { authenticationRequired } from '../middlewares/authenticationRequired';
+import { IUser } from '../models/usersModel';
 
 const router = Router();
+
+router.get('/me', authenticationRequired, (req, res) => {
+  return res.send((req.user as IUser).getSafeUser());
+})
 
 // uri finale = /api/users/:userId, cf ligne "app.use('/users', usersRoutes);"
 router.get('/:userId', authenticationRequired, (req, res) => {} ,(req : Request, res : Response) => {
@@ -14,7 +19,7 @@ router.get('/:userId', authenticationRequired, (req, res) => {} ,(req : Request,
     (user) => {
       if (!user) { return res.status(404).send('User Not Found'); }
 
-      return res.send(user);
+      return res.send(user.getSafeUser());
     },
   );
 });
@@ -29,7 +34,7 @@ router.post('/', (req : Request, res : Response) => {
   // Appelle le controller
   const newUser = createUser(firstname, lastname, email, password);
 
-  res.send(newUser);
+  res.send(newUser.getSafeUser());
 });
 
 router.patch('/:userId', authenticationRequired, (req: Request, res: Response) => {

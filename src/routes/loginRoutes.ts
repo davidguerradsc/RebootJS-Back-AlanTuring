@@ -13,14 +13,16 @@ router.post('/', (req, res) => {
     }
 
     if(user) {
-      req.logIn(user, (err) => {
-        if(err) return res.status(500).send();
-        return res.send(user);
+      req.logIn(user, (error) => {
+        if(error) return res.status(500).send();
+        return res.send(user.getSafeUser());
       })
+    } else {
+      return res.status(404).send("User not found");
     }
   });
 
-  authenticationFunction(req, res);
+  return authenticationFunction(req, res);
 })
 
 export default router;
