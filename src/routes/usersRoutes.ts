@@ -15,7 +15,7 @@ router.get('/me', authenticationRequired, (req, res) => {
   });
 })
 
-router.get('/me', authenticationRequired, (req, res) => res.send((req.user as IUser).getSafeUser()));
+// router.get('/me', authenticationRequired, (req, res) => res.send((req.user as IUser).getSafeUser()));
 
 // uri finale = /api/users/:userId, cf ligne "app.use('/users', usersRoutes);"
 router.get('/:userId', authenticationRequired, (req, res) => {}, (req : Request, res : Response) => {
