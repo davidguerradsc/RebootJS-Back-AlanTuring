@@ -15,12 +15,10 @@ router.get('/me', authenticationRequired, (req, res) => {
   });
 })
 
-router.get('/me', authenticationRequired, (req, res) => {
-  return res.send((req.user as IUser).getSafeUser());
-})
+router.get('/me', authenticationRequired, (req, res) => res.send((req.user as IUser).getSafeUser()));
 
 // uri finale = /api/users/:userId, cf ligne "app.use('/users', usersRoutes);"
-router.get('/:userId', authenticationRequired, (req, res) => {} ,(req : Request, res : Response) => {
+router.get('/:userId', authenticationRequired, (req, res) => {}, (req : Request, res : Response) => {
   const id = req.params.userId;
 
   getUser(
@@ -34,7 +32,9 @@ router.get('/:userId', authenticationRequired, (req, res) => {} ,(req : Request,
 });
 
 router.post('/', (req : Request, res : Response) => {
-  const { firstname, lastname, email, password } = req.body;
+  const {
+    firstname, lastname, email, password,
+  } = req.body;
 
   if (!firstname || !lastname || !email || !password) {
     return res.status(400).send('Please provide a firstname, lastname and email');
