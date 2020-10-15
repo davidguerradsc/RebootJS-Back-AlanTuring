@@ -11,8 +11,6 @@ import connect_mongo from 'connect-mongo';
 import { authenticationInitialize, authenticationSession } from './controllers/authenticationController';
 const MongoStore = connect_mongo(session);
 
-const MongoStore = connect_mongo(session);
-
 export function createExpressApp(config: IConfig): express.Express {
   const { express_debug, session_cookie_name, session_secret } = config;
 
