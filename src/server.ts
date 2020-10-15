@@ -5,7 +5,7 @@ import session from 'express-session';
 import mongoose from 'mongoose';
 import connect_mongo from 'connect-mongo';
 import { configuration, IConfig } from './config';
-import cors from 'cors';
+//import cors from 'cors';
 import generalRouter from './routes/router';
 import { connect } from './database';
 import { authenticationInitialize, authenticationSession } from './controllers/authenticationController';
@@ -19,7 +19,7 @@ export function createExpressApp(config: IConfig): express.Express {
 
   app.use(morgan('combined'));
   app.use(helmet());
-  app.use(cors());
+  //app.use(cors());
   app.use(express.json());
   app.use(session({
     name: session_cookie_name,
