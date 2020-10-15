@@ -2,13 +2,14 @@ import express, { Request, Response, ErrorRequestHandler } from 'express';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import session from 'express-session';
+import mongoose from 'mongoose';
+import connect_mongo from 'connect-mongo';
 import { configuration, IConfig } from './config';
 
 import generalRouter from './routes/router';
 import { connect } from './database';
-import mongoose from 'mongoose';
-import connect_mongo from 'connect-mongo';
 import { authenticationInitialize, authenticationSession } from './controllers/authenticationController';
+
 const MongoStore = connect_mongo(session);
 
 export function createExpressApp(config: IConfig): express.Express {
@@ -22,14 +23,14 @@ export function createExpressApp(config: IConfig): express.Express {
   app.use(session({
     name: session_cookie_name,
     secret: session_secret,
-    store: new MongoStore({mongooseConnection: mongoose.connection}), // Recup connexion from mongoose
+    store: new MongoStore({ mongooseConnection: mongoose.connection }), // Recup connexion from mongoose
     saveUninitialized: false,
-    resave: false
+    resave: false,
   }));
   app.use(authenticationInitialize());
   app.use(authenticationSession());
 
-  app.use(((err, _req, res, _next) => {
+  app.use(((err, _req, res) => {
     console.error(err.stack);
     res.status?.(500).send(!express_debug ? 'Oups' : err);
   }) as ErrorRequestHandler);
