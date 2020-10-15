@@ -58,11 +58,11 @@ const userSchema = new Schema({
 });
 
 userSchema.methods.getSafeUser = function() {
-    const { _id, firstname, lastname, email } = this;
-    return { _id, firstname, lastname, email };
+  const { _id, firstname, lastname, email } = this;
+  return { _id, firstname, lastname, email };
 }
 
-userSchema.methods.status = function () {
+userSchema.methods.status = function() {
   return `User : ${this.firstname} ${this.lastname}`;
 };
 

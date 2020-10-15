@@ -15,6 +15,10 @@ router.get('/me', authenticationRequired, (req, res) => {
   });
 })
 
+router.get('/me', authenticationRequired, (req, res) => {
+  return res.send((req.user as IUser).getSafeUser());
+})
+
 // uri finale = /api/users/:userId, cf ligne "app.use('/users', usersRoutes);"
 router.get('/:userId', authenticationRequired, (req, res) => {} ,(req : Request, res : Response) => {
   const id = req.params.userId;
@@ -24,7 +28,7 @@ router.get('/:userId', authenticationRequired, (req, res) => {} ,(req : Request,
     (user) => {
       if (!user) { return res.status(404).send('User Not Found'); }
 
-      return res.send(user);
+      return res.send(user.getSafeUser());
     },
   );
 });
@@ -39,7 +43,7 @@ router.post('/', (req : Request, res : Response) => {
   // Appelle le controller
   const newUser = createUser(firstname, lastname, email, password);
 
-  return res.send(newUser);
+  res.send(newUser.getSafeUser());
 });
 
 // get allUsers
