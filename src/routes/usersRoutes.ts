@@ -46,16 +46,6 @@ router.post('/', (req : Request, res : Response) => {
   res.send(newUser.getSafeUser());
 });
 
-// get allUsers
-/* router.get('/', (req: Request, res: Response) => {
-    getUsers((users) => {
-        if(!users) { return res.status(404).send('Users not found')}
-        return res.send(users);
-    });
-}); */
-
-
-
 router.patch('/:userId', authenticationRequired, (req: Request, res: Response) => {
   const id = req.params.userId;
   const { firstname, lastname, email } = req.body;
