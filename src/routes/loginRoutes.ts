@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import passport from 'passport';
-import { DatabaseError } from '../controllers/errors/databaseError';
 import { UserNotFoundError } from '../controllers/errors/userNotFound';
 
 const router = Router();

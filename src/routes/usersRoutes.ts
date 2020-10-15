@@ -1,24 +1,23 @@
 import { Request, Response, Router } from 'express';
 import { UserNotFoundError } from '../controllers/errors/userNotFound';
-import { createUser, getUser, updateUser, getUsers } from '../controllers/usersController';
+import { createUser, getUser, getUsers, updateUser } from '../controllers/usersController';
 import { authenticationRequired } from '../middlewares/authenticationRequired';
 import { IUser } from '../models/usersModel';
 
 const router = Router()
 
-router.get('/me', authenticationRequired, (req, res) => {
-    return res.send((req.user as IUser).getSafeUser());
-  })
-
-  router.get('/', (req: Request, res: Response) => { getUsers().then(users => {
-      res.send(users.map(user => user.getSafeUser()));
+router.get('/', (req: Request, res: Response) => {
+  getUsers().then(users => {
+    return res.send(
+      users.map(user => user.getSafeUser())
+    );
   });
 })
 
-// router.get('/me', authenticationRequired, (req, res) => res.send((req.user as IUser).getSafeUser()));
+router.get('/me', authenticationRequired, (req, res) => res.send((req.user as IUser).getSafeUser()));
 
 // uri finale = /api/users/:userId, cf ligne "app.use('/users', usersRoutes);"
-router.get('/:userId', authenticationRequired, (req, res) => {}, (req : Request, res : Response) => {
+router.get('/:userId', (req, res) => {}, (req : Request, res : Response) => {
   const id = req.params.userId;
 
   getUser(
