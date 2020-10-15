@@ -10,6 +10,11 @@ router.get('/me', authenticationRequired, (req, res) => {
     return res.send((req.user as IUser).getSafeUser());
   })
 
+  router.get('/', (req: Request, res: Response) => { getUsers().then(users => {
+      res.send(users.map(user => user.getSafeUser()));
+  });
+})
+
 // uri finale = /api/users/:userId, cf ligne "app.use('/users', usersRoutes);"
 router.get('/:userId', authenticationRequired, (req, res) => {} ,(req : Request, res : Response) => {
   const id = req.params.userId;
