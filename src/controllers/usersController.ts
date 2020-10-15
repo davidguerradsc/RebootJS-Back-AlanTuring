@@ -9,6 +9,10 @@ function createUser(firstname: string, lastname: string, email: string, password
   return user;
 }
 
+function getUsers() : Promise<IUser[]>{
+  return User.find({}, '_id firstname lastname').then(res => {return res});
+}
+
 function getUser(id: string, callback: (user: IUser | null) => void) : void{
   // return existingUsers.find(user => user.id === id);
   User.findById(
@@ -40,4 +44,5 @@ export {
   createUser,
   getUser,
   updateUser,
+  getUsers
 };

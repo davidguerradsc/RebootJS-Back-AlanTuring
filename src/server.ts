@@ -1,6 +1,7 @@
 import express, { Request, Response, ErrorRequestHandler } from 'express';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import cors from 'cors';
 import session from 'express-session';
 import mongoose from 'mongoose';
 import connect_mongo from 'connect-mongo';
@@ -19,6 +20,7 @@ export function createExpressApp(config: IConfig): express.Express {
 
   app.use(morgan('combined'));
   app.use(helmet());
+  app.use(cors());
   app.use(express.json());
   app.use(session({
     name: session_cookie_name,
