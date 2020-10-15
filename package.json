@@ -6,6 +6,8 @@
   "dependencies": {
     "@hapi/joi": "^17.1.1",
     "@types/cors": "^2.8.8",
+    "@types/crypto-js": "^4.0.1",
+    "@types/express-session": "^1.17.0",
     "connect-mongo": "^3.2.0",
     "cors": "^2.8.5",
     "crypto-js": "^4.0.0",
