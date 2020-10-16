@@ -32,7 +32,7 @@ export function createExpressApp(config: IConfig): express.Express {
   app.use(authenticationInitialize());
   app.use(authenticationSession());
 
-    app.use(((err, _req, res) => {
+    app.use(((err, _req, res, _next) => {
         console.error(err.stack);
         res.status?.(500).send(!express_debug ? 'Oups' : err);
     }) as ErrorRequestHandler);
