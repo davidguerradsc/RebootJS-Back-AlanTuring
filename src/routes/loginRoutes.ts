@@ -12,13 +12,13 @@ router.post('/', (req, res) => {
     }
 
     if (user) {
-      req.logIn(user, (error) => {
+      return req.logIn(user, (error) => {
         if (error) return res.status(500).send();
         return res.send(user.getSafeUser());
       });
-    } else {
-      return res.status(404).send('User not found');
     }
+
+    return res.status(404).send('User not found');
   });
 
   return authenticationFunction(req, res);
