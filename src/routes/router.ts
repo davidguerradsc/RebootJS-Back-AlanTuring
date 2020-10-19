@@ -6,6 +6,5 @@ const router = Router()
 
 router.use('/users', usersRoutes);
 router.use('/login', loginRoutes);
-router.use('/register', registerRoutes);
 
 export default router;
