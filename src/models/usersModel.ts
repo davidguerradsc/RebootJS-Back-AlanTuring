@@ -7,6 +7,7 @@ export interface IUser extends Document {
   firstname: string;
   lastname: string;
   email: string;
+  conversationsSeen: {[convId: string]: Date};
   status: () => string;
   verifyPassword: (password: string) => boolean;
   setPassword: (password: string) => void;
@@ -20,14 +21,15 @@ const userSchema = new Schema({
   lastname: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  conversationsSeen : { type: Map, of: Date }
 });
 
 userSchema.methods.getSafeUser = function () {
   const {
-    _id, firstname, lastname, email,
+    _id, firstname, lastname, email, conversationsSeen
   } = this;
   return {
-    _id, firstname, lastname, email,
+    _id, firstname, lastname, email, conversationsSeen
   };
 };
 
