@@ -1,5 +1,4 @@
 import { SHA256 } from 'crypto-js';
-
 import {
   Document, Schema, model, Model,
 } from 'mongoose';
