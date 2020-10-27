@@ -21,7 +21,7 @@ const userSchema = new Schema({
   lastname: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  conversationsSeen: {}
+  conversationsSeen : {}
 });
 
 userSchema.methods.getSafeUser = function () {

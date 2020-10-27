@@ -40,7 +40,7 @@ function updateUser(id: string, firstname?: string, lastname?: string, email?: s
   });
 }
 
-function updateConversationSeen(user: IUser, conversationId: string): Promise<IUser> {
+function updateConversationSeen(user: IUser, conversationId: string): Promise<IUser>{
   user.conversationsSeen = {
     ...user.conversationsSeen,
     [conversationId]: new Date()

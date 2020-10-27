@@ -49,7 +49,7 @@ router.patch('/conversation-seen', authenticationRequired, async (req: Request, 
   const user = req.user as IUser;
   const { conversationId } = req.body;
 
-  if (!conversationId) { return res.sendStatus(400); }
+  if(!conversationId) { return res.sendStatus(400); }
 
   const updatedUser = await updateConversationSeen(user, conversationId);
 
