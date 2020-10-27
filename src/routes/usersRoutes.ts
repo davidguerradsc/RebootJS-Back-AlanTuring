@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { UserNotFoundError } from '../controllers/errors/userNotFound';
-import { createUser, getUser, getUsers, updateUser } from '../controllers/usersController';
+import { createUser, getUser, getUsers, updateConversationSeen, updateUser } from '../controllers/usersController';
 import { authenticationRequired } from '../middlewares/authenticationRequired';
 import { IUser } from '../models/usersModel';
 
@@ -44,6 +44,17 @@ router.post('/', (req : Request, res : Response) => {
 
   res.send(newUser.getSafeUser());
 });
+
+router.patch('/conversation-seen', authenticationRequired, async (req: Request, res: Response) => {
+  const user = req.user as IUser;
+  const { conversationId } = req.body;
+
+  if(!conversationId) { return res.sendStatus(400); }
+
+  const updatedUser = await updateConversationSeen(user, conversationId);
+
+  return res.send(updatedUser.getSafeUser());
+})
 
 router.patch('/:userId', authenticationRequired, (req: Request, res: Response) => {
   const id = req.params.userId;

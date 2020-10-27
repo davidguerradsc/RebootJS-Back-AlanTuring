@@ -40,9 +40,18 @@ function updateUser(id: string, firstname?: string, lastname?: string, email?: s
   });
 }
 
+function updateConversationSeen(user: IUser, conversationId: string): Promise<IUser>{
+  user.conversationsSeen = {
+    ...user.conversationsSeen,
+    [conversationId]: new Date()
+  }
+  return user.save()
+}
+
 export {
   createUser,
   getUser,
   updateUser,
-  getUsers
+  getUsers,
+  updateConversationSeen
 };
