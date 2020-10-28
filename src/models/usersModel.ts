@@ -8,33 +8,34 @@ export interface IUser extends Document {
   lastname: string;
   email: string;
   conversationsSeen: { [convId: string]: Date };
-  status: () => string;
+  socket?: string;
+  status: IUserStatus;
   verifyPassword: (password: string) => boolean;
   setPassword: (password: string) => void;
   getSafeUser: () => ISafeUser;
 }
 
-type ISafeUser = Pick<IUser, 'firstname' | 'lastname' | 'email' | '_id' | 'conversationsSeen'>
+type IUserStatus = 'online' | 'offline';
+
+type ISafeUser = Pick<IUser, 'firstname' | 'lastname' | 'email' | '_id' | 'conversationsSeen' | 'status'>
 
 const userSchema = new Schema({
   firstname: { type: String, required: true },
   lastname: { type: String, required: true },
+  status: { type: String, required: true, default: 'offline' },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  conversationsSeen : {}
+  socket: { type: String },
+  conversationsSeen: {}
 });
 
 userSchema.methods.getSafeUser = function () {
   const {
-    _id, firstname, lastname, email, conversationsSeen
+    _id, firstname, lastname, email, conversationsSeen, status
   } = this;
   return {
-    _id, firstname, lastname, email, conversationsSeen
+    _id, firstname, lastname, email, conversationsSeen, status
   };
-};
-
-userSchema.methods.status = function () {
-  return `User : ${this.firstname} ${this.lastname}`;
 };
 
 userSchema.methods.setPassword = function (password: string) {

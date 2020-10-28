@@ -4,7 +4,7 @@ import { createUser, getUser, getUsers, updateConversationSeen, updateUser } fro
 import { authenticationRequired } from '../middlewares/authenticationRequired';
 import { IUser } from '../models/usersModel';
 
-const router = Router()
+const router = Router();
 
 router.get('/', (req: Request, res: Response) => {
   getUsers().then(users => {
@@ -17,7 +17,7 @@ router.get('/', (req: Request, res: Response) => {
 router.get('/me', authenticationRequired, (req, res) => res.send((req.user as IUser).getSafeUser()));
 
 // uri finale = /api/users/:userId, cf ligne "app.use('/users', usersRoutes);"
-router.get('/:userId', (req, res) => {}, (req : Request, res : Response) => {
+router.get('/:userId', (req, res) => { }, (req: Request, res: Response) => {
   const id = req.params.userId;
 
   getUser(
@@ -30,7 +30,7 @@ router.get('/:userId', (req, res) => {}, (req : Request, res : Response) => {
   );
 });
 
-router.post('/', (req : Request, res : Response) => {
+router.post('/', (req: Request, res: Response) => {
   const {
     firstname, lastname, email, password,
   } = req.body;
@@ -49,7 +49,7 @@ router.patch('/conversation-seen', authenticationRequired, async (req: Request, 
   const user = req.user as IUser;
   const { conversationId } = req.body;
 
-  if(!conversationId) { return res.sendStatus(400); }
+  if (!conversationId) { return res.sendStatus(400); }
 
   const updatedUser = await updateConversationSeen(user, conversationId);
 
@@ -66,9 +66,9 @@ router.patch('/:userId', authenticationRequired, (req: Request, res: Response) =
     if (err instanceof UserNotFoundError) {
       res.status(404).send('User not found');
     } else {
-      throw err
+      throw err;
     }
   }
-})
+});
 
 export default router;
