@@ -3,6 +3,7 @@ import { DatabaseError } from '../controllers/errors/databaseError';
 import { authenticationRequired } from '../middlewares/authenticationRequired';
 import { Message } from '../models/messagesModel';
 import { IUser } from '../models/usersModel';
+import { io } from '../socket';
 
 const router = Router();
 
@@ -44,6 +45,15 @@ router.post('/', authenticationRequired, async (req, res) => {
 
   try {
     const createdMessage = await message.save()
+
+    /* IO emition
+    pour chaque target {
+      - récuperer l'id de la socket stocké dans le user
+      - si elle existe c'est que le lien entre le back et le front existe donc
+      je peux emettre un evenement avec io.to(socketID).emit('new-message', data)
+      - sinon pas la peine d'envoyer un event
+    }*/
+
     return res.send(createdMessage);
   } catch(err) {
     throw new DatabaseError(err);

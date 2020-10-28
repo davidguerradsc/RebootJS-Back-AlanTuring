@@ -10,9 +10,10 @@ import { IUser } from './models/usersModel';
 
 export const activesSockets = new Set<Socket>();
 
+export let io: socketIO.Server;
 export function initializeSocket(config: IConfig, httpServer: HTTPServer, sessionStore: Store){
   const { session_cookie_name, session_secret } = config;
-  const io = socketIO(httpServer);
+  io = socketIO(httpServer);
 
   io.use(
     passportSocketIo.authorize({
@@ -32,16 +33,21 @@ async function removeSocketConnection(socket: Socket, user: IUser){
   activesSockets.delete(socket);
 
   delete user.socket;
+  user.status = 'offline';
   await user.save();
+  console.log("emit [user-status-update] ---> ");
+  io.emit('user-status-update', {user: user.getSafeUser()});
 }
 
 async function newSocketConnection(socket: Socket){
   const user = socket.request.user as IUser;
   user.socket = socket.id;
+  user.status = 'online';
 
   await user.save();
 
   activesSockets.add(socket);
-
+  console.log("emit [user-status-update] ---> ");
+  io.emit('user-status-update', {user: user.getSafeUser()});
   socket.on('disconnect', () => removeSocketConnection(socket, user));
 }
