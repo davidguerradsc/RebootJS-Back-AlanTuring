@@ -8,6 +8,7 @@ export interface IUser extends Document {
   lastname: string;
   email: string;
   conversationsSeen: {[convId: string]: Date};
+  socket?: string;
   status: () => string;
   verifyPassword: (password: string) => boolean;
   setPassword: (password: string) => void;
@@ -21,6 +22,7 @@ const userSchema = new Schema({
   lastname: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  socket: { type: String },
   conversationsSeen : {}
 });
 
