@@ -7,7 +7,7 @@ export interface IUser extends Document {
   firstname: string;
   lastname: string;
   email: string;
-  conversationsSeen: { [convId: string]: Date };
+  conversationsSeen: {[convId: string]: Date};
   socket?: string;
   status: IUserStatus;
   verifyPassword: (password: string) => boolean;
@@ -22,11 +22,11 @@ type ISafeUser = Pick<IUser, 'firstname' | 'lastname' | 'email' | '_id' | 'conve
 const userSchema = new Schema({
   firstname: { type: String, required: true },
   lastname: { type: String, required: true },
-  status: { type: String, required: true, default: 'offline' },
+  status: { type: String, required: true, default: 'offline'},
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   socket: { type: String },
-  conversationsSeen: {}
+  conversationsSeen : {}
 });
 
 userSchema.methods.getSafeUser = function () {
