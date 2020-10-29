@@ -36,7 +36,7 @@ export function createExpressApp(config: IConfig): express.Express {
     cookie: {}
   }
 
-  if (process.env.NODE_ENV === 'production') {
+  if(process.env.NODE_ENV === 'production'){
     app.set('trust proxy', 1);
     sessionConfig.cookie = {
       secure: true,
