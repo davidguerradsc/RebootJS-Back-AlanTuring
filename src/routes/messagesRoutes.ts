@@ -59,14 +59,14 @@ router.post('/', authenticationRequired, async (req, res) => {
       .filter(targ => targ != connectedUser._id)
       .forEach(async (target) => {
         const user = await User.findById(target);
-        if (!user) { return }
-        if (!user.socket) { return }
+        if(!user) { return }
+        if(!user.socket) { return }
 
         console.log('emitting [new-message] ----->')
         return io.to(user.socket).emit('new-message', { message: createdMessage })
       }
-      )
-  } catch (err) {
+    )
+  } catch(err) {
     throw new DatabaseError(err);
   }
 })
