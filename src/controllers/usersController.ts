@@ -9,6 +9,10 @@ function createUser(firstname: string, lastname: string, email: string, password
   return user;
 }
 
+function getUsers() : Promise<IUser[]>{
+  return User.find({}, '_id firstname lastname').then(res => {return res});
+}
+
 function getUser(id: string, callback: (user: IUser | null) => void) : void{
   // return existingUsers.find(user => user.id === id);
   User.findById(
@@ -19,14 +23,6 @@ function getUser(id: string, callback: (user: IUser | null) => void) : void{
       callback(res);
     },
   );
-}
-
-function getUsers(callback: (users: IUser[]) => void): void {
-    User.find({}, function (err, users) {
-        if (err) { throw err; }
-
-        callback(users);
-    })
 }
 
 function updateUser(id: string, firstname?: string, lastname?: string, email?: string, callback?: (user: IUser) => void) {
@@ -44,9 +40,18 @@ function updateUser(id: string, firstname?: string, lastname?: string, email?: s
   });
 }
 
+function updateConversationSeen(user: IUser, conversationId: string): Promise<IUser>{
+  user.conversationsSeen = {
+    ...user.conversationsSeen,
+    [conversationId]: new Date()
+  }
+  return user.save()
+}
+
 export {
   createUser,
   getUser,
   updateUser,
   getUsers,
+  updateConversationSeen
 };

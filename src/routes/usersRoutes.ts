@@ -1,13 +1,23 @@
-import { request, Request, Response, Router } from 'express';
-import { resolveTypeReferenceDirective } from 'typescript';
+import { Request, Response, Router } from 'express';
 import { UserNotFoundError } from '../controllers/errors/userNotFound';
-import { createUser, getUser, updateUser, getUsers } from '../controllers/usersController';
+import { createUser, getUser, getUsers, updateConversationSeen, updateUser } from '../controllers/usersController';
 import { authenticationRequired } from '../middlewares/authenticationRequired';
+import { IUser } from '../models/usersModel';
 
-const router = Router()
+const router = Router();
+
+router.get('/', (req: Request, res: Response) => {
+  getUsers().then(users => {
+    return res.send(
+      users.map(user => user.getSafeUser())
+    );
+  });
+})
+
+router.get('/me', authenticationRequired, (req, res) => res.send((req.user as IUser).getSafeUser()));
 
 // uri finale = /api/users/:userId, cf ligne "app.use('/users', usersRoutes);"
-router.get('/:userId', authenticationRequired, (req, res) => {} ,(req : Request, res : Response) => {
+router.get('/:userId', (req, res) => { }, (req: Request, res: Response) => {
   const id = req.params.userId;
 
   getUser(
@@ -15,13 +25,15 @@ router.get('/:userId', authenticationRequired, (req, res) => {} ,(req : Request,
     (user) => {
       if (!user) { return res.status(404).send('User Not Found'); }
 
-      return res.send(user);
+      return res.send(user.getSafeUser());
     },
   );
 });
 
-router.post('/', (req : Request, res : Response) => {
-  const { firstname, lastname, email, password } = req.body;
+router.post('/', (req: Request, res: Response) => {
+  const {
+    firstname, lastname, email, password,
+  } = req.body;
 
   if (!firstname || !lastname || !email || !password) {
     return res.status(400).send('Please provide a firstname, lastname and email');
@@ -30,17 +42,19 @@ router.post('/', (req : Request, res : Response) => {
   // Appelle le controller
   const newUser = createUser(firstname, lastname, email, password);
 
-  res.send(newUser);
+  res.send(newUser.getSafeUser());
 });
 
+router.patch('/conversation-seen', authenticationRequired, async (req: Request, res: Response) => {
+  const user = req.user as IUser;
+  const { conversationId } = req.body;
 
-router.get('/', (req: Request, res: Response) => {
-    getUsers((users) => {
-        if(!users) { return res.status(404).send('Users not found')}
-        return res.send(users);
-    });
-});
+  if (!conversationId) { return res.sendStatus(400); }
 
+  const updatedUser = await updateConversationSeen(user, conversationId);
+
+  return res.send(updatedUser.getSafeUser());
+})
 
 router.patch('/:userId', authenticationRequired, (req: Request, res: Response) => {
   const id = req.params.userId;
@@ -52,9 +66,9 @@ router.patch('/:userId', authenticationRequired, (req: Request, res: Response) =
     if (err instanceof UserNotFoundError) {
       res.status(404).send('User not found');
     } else {
-      throw err
+      throw err;
     }
   }
-})
+});
 
 export default router;
