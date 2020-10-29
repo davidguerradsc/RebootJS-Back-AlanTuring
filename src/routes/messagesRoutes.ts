@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { DatabaseError } from '../controllers/errors/databaseError';
 import { authenticationRequired } from '../middlewares/authenticationRequired';
 import { Message } from '../models/messagesModel';
-import { IUser } from '../models/usersModel';
+import { IUser, User } from '../models/usersModel';
 import { io } from '../socket';
 
 const router = Router();
@@ -45,6 +45,7 @@ router.post('/', authenticationRequired, async (req, res) => {
 
   try {
     const createdMessage = await message.save()
+    res.send(createdMessage);
 
     /* IO emition
     pour chaque target {
@@ -54,7 +55,17 @@ router.post('/', authenticationRequired, async (req, res) => {
       - sinon pas la peine d'envoyer un event
     }*/
 
-    return res.send(createdMessage);
+    createdMessage.targets
+      .filter(targ => targ != connectedUser._id)
+      .forEach(async (target) => {
+        const user = await User.findById(target);
+        if (!user) { return }
+        if (!user.socket) { return }
+
+        console.log('emitting [new-message] ----->')
+        return io.to(user.socket).emit('new-message', { message: createdMessage })
+      }
+      )
   } catch (err) {
     throw new DatabaseError(err);
   }
