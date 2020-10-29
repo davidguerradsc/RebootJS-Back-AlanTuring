@@ -27,13 +27,23 @@ export function createExpressApp(config: IConfig): express.Express {
     credentials: true
   }));
   app.use(express.json());
-  app.use(session({
+  const sessionConfig = {
     name: session_cookie_name,
     secret: session_secret,
     store: sessionStore, // Recup connexion from mongoose
     saveUninitialized: false,
     resave: false,
-  }));
+    cookie: {}
+  }
+
+  if(process.env.NODE_ENV === 'production'){
+    app.set('trust proxy', 1);
+    sessionConfig.cookie = {
+      secure: true,
+      sameSite: 'none'
+    }
+  }
+  app.use(session(sessionConfig));
   app.use(authenticationInitialize());
   app.use(authenticationSession());
 
